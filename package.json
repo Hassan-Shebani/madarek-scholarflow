@@ -1,0 +1,28 @@
+{
+  "name": "madarek-scholarflow",
+  "version": "1.0.0",
+  "description": "Madarek ScholarFlow - Smart Academic Search Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server",
+    "dev": "live-server",
+    "build": "echo 'No build step - ES modules used directly'",
+    "test": "echo 'Tests described in README'"
+  },
+  "keywords": [
+    "scholarflow",
+    "madarek",
+    "academic search",
+    "research platform",
+    "openalex",
+    "crossref"
+  ],
+  "author": "د. حسن الشيباني",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "live-server": "^1.2.1"
+  }
+}

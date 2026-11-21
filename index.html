@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>مدارك | ScholarFlow</title>
+    <meta name="author" content="د. حسن الشيباني">
+    <meta name="description" from="منصة بحث علمية ذكية تدمج بين محركات بحث متعددة">
+    <meta name="keywords" content="بحث علمي، منصة أكاديمية، OpenAlex، Crossref، CORE، استعراض الأدبيات">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/minimal.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">م</div>
+        <div class="brand-name">مدارك</div>
+        <small>ScholarFlow</small>
+        <div class="nav-actions">
+            <button class="theme-toggle" aria-label="تغيير مظهر الثيم">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button id="searchBtn" class="btn-search" aria-label="تنفيذ البحث">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </header>
+
+    <nav class="main-nav" id="mainNav">
+        <button data-section="explore" class="nav-btn active" aria-label="التبديل إلى قسم الاستكشاف">
+            <i class="fa-solid fa-gem"></i> الاستكشاف والاسترجاع
+        </button>
+        <button data-section="screen" class="nav-btn" aria-label="التبديل إلى قسم الفرز وPRISMA" hidden>
+            <i class="fa-solid fa-filter"></i> الفرز وPRISMA
+        </button>
+        <button data-section="matrix" class="nav-btn" aria-label="التبديل إلى مصفوفة الأدبيات">
+            <i class="fa-solid fa-table"></i> مصفوفة الأدبيات
+        </button>
+        <button data-section="citations" class="nav-btn" aria-label="التبديل إلى خريطة الاستشهادات">
+            <i class="fa-solid fa-share-nodes"></i> خريطة الاستشهادات
+        </button>
+        <button data-section="reader" class="nav-btn" aria-label="التبديل إلى قسم القراءة النقدية">
+            <i class="fa-solid fa-book-open"></i> القراءة النقدية
+        </button>
+        <button data-section="synth" class="nav-btn" aria-label="التبديل إلى قسم الصياغة والتوليف">
+            <i class="fa-solid fa-sync"></i> الصياغة والتوليف
+        </button>
+        <button data-section="refs" class="nav-btn" aria-label="التبديل إلى قسم المراجع والتصدير">
+            <i class="fa-solid fa-folder"></i> المراجع والتصدير
+        </button>
+    </nav>
+
+    <main class="container">
+        <section id="explore" class="section active">
+            <div class="hero">
+                <div class="hero-header">
+                    <h2>ابحث في الأدبيات العلمية</h2>
+                    <small>اضغط <kbd>/</kbd> للوصول السريع إلى خانة البحث</small>
+                </div>
+                <div class="hero-search">
+                    <input type="search" id="query" placeholder="اكتب عنوان بحث أو موضوع أو DOI..." autocomplete="off"
+                           aria-label="خانة البحث" onkeydown="if(event.key==='Enter')performSearch()">
+                    <button class="btn-hero" onclick="performSearch()" aria-label="تنفيذ البحث">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="hero-options">
+                    <select id="engineSelector">
+                        <option value="all">جميع المحركات</option>
+                        <option value="openalex">OpenAlex</option>
+                        <option value="crossref">Crossref</option>
+                        <option value="core">CORE</option>
+                    </select>
+                    <button class="btn-opt" onclick="openAdvancedSearch()">بحث متقدم</button>
+                    <button class="btn-opt" onclick="openImportDialog()">استيراد ملف</button>
+                    <button class="btn-opt" onclick="openGoogleScholar()">Google Scholar</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen" class="section" hidden>
+            <div class="screen-container">
+                <h3>فرز الأدبيات (PRISMA)</h3>
+                <p>منطقية فرز الدراسات وفقاً لمعايير الإدراج والاستبعاد</p>
+                <div class="prisma-flow">
+                    <div class="step">التحديد <span id="identification">0</span></div>
+                    <div class="step">الفحص <span id="screening">0</span></div>
+                    <div class="step">التأهيل <span id="eligibility">0</span></div>
+                    <div class="step">الشمول <span id="inclusion">0</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="matrix" class="section" hidden>
+            <div class="matrix-panel">
+                <h3>مصفوفة الأدبيات</h3>
+                <p>تصنيف الدراسات وتصنيف المنهجيات</p>
+                <div class-methods>
+                    <select id="methodFilter">
+                        <option value="">جميع المنهجيات</option>
+                        <option article>مقال في مجلة</option>
+                        <option book>كتاب</option>
+                        <option thesis>رسالة جامعية</option>
+                    </select>
+                </div>
+                <div id="matrixResults" class="matrix-list">
+                    <!-- النتائج ستُحمل ديناميكياً -->
+                </div>
+            </div>
+        </section>
+
+        <section id="citations" class="section" hidden>
+            <div class="citation-panel">
+                <h3>خرائط الاستشهادات</h3>
+                <p>visualize relationships بين الدراسات</p>
+                <div class="cit-options">
+                    <select id="citationEngine">
+                        <option value="manual">يدوي</option>
+                        <option value="doi">باستخدام DOI</option>
+                    </select>
+                    <button class="btn-small" onclick="buildCitationMap()">بناء الخريطة</button>
+                </div>
+                <div id="citationMap" class="map-visual">
+                    <p>سيظهر هنا عرض بصري لخرائط الاستشهادات</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="reader" class="section" hidden>
+            <div class="reader-panel">
+                <h3>القراءة النقدية</h3>
+                <p>تحليل وتقييم جودة الدراسات المضافة</p>
+                <div class="criteria">
+                    <label><input type="checkbox" id="critQuality"> ذات جودة عالية</label>
+                    <label><input type="checkbox" id="critRelevance"> ذات صلة بالموضوع</label>
+                    <label><input type="checkbox" id="critMethodology"> منهجية سليمة</label>
+                </div>
+                <div id="readerResults" class="reader-list">
+                    <!-- الدراسات مع تحليل نقدي -->
+                </div>
+            </div>
+        </section>
+
+        <section id="synth" class="section" hidden>
+            <div class="synthesis-panel">
+                <h3>الصياغة والتوليف</h3>
+                <p>خلق معرفة جديدة من خلال دمج الدراسات</p>
+                <div class="synth-tools">
+                    <button class="btn" onclick="generateSynthesis()"> توليف تلقائي</button>
+                    <button class="btn" onclick="exportSynthesis()"> تصدير التقرير</button>
+                </div>
+                <div id="synthesisOutput" class="synthesis-result">
+                    <!-- مخرجات التوليف -->
+                </div>
+            </div>
+        </section>
+
+        <section id="refs" class="section" hidden>
+            <div class="refs-panel">
+                <h3>المراجع والتصدير</h3>
+                <p>إدارة المكتبات وتصدير التنسيقات</p>
+                <div class="refs-tools">
+                    <select id="exportFormat">
+                        <option value="apa">APA</option>
+                        <option value="mla">MLA</option>
+                        <option value="ieee">IEEE</option>
+                        <option value="bibtex">BibTeX</option>
+                    </select>
+                    <button class="btn" onclick="exportSelected()">تصدير مختارة</button>
+                    <button class="btn" onclick="exportAll()">تصدير الكل</button>
+                </div>
+                <div id="refsList" class="refs-list">
+                    <!-- قائمة المراجع -->
+                </div>
+                <div class="export-format-preview" id="formatPreview"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 مدارك | منصة بحث علمية <br>تصميم وتطوير: د. حسن الشيباني</p>
+        <div class="footer-links">
+            <a href="#" aria-label="التوثيق">التوثيق</a>
+            <a href="#" aria-label="اتصل بنا">اتصل بنا</a>
+        </div>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
