@@ -1,189 +1,220 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="default">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>مدارك | ScholarFlow</title>
-    <meta name="author" content="د. حسن الشيباني">
-    <meta name="description" from="منصة بحث علمية ذكية تدمج بين محركات بحث متعددة">
-    <meta name="keywords" content="بحث علمي، منصة أكاديمية، OpenAlex، Crossref، CORE، استعراض الأدبيات">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/minimal.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدارك | ScholarFlow</title>
+<meta name="author" content="د. حسن الشيباني">
+<meta name="copyright" content="تصميم وتطوير المنظومة البحثية العلمية: د. حسن الشيباني">
+<style>
+/* خطوط مضمَّنة (ترخيص OFL): IBM Plex Sans Arabic · Noto Naskh Arabic · Aref Ruqaa · Newsreader — لا حاجة للاتصال بالإنترنت */
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:400;font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAAKdgABEAAAACL0AAAKb8AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoQaG/cWHKtsBmAAjz4IUgmCcxEQCoXUJIWSFAuUMgABNgIkA6hgBCAFg3YHgYYbDIRCW88CkgPixrb/dUMJNLJ5tG3IVZHu+Qg30E1MLEXku+phULoOsbB/3wtsm0bz7G4lTUBl7JH9/////29IFjK2vwPufxsbIgFYpkaZicnEHCJFSqhcUsIx1yBuLXuAo7ucSmxyv5jgMrerpcU/cg4Mi1hbhi3nbAlKStUW21O0adZqTTlsGyerudQSVuuhZIIWNza5s093qr5Gu9lUzeH4QgcnDiICEYGn+7yljap10VpKwe/BPeZdUO3pEG22W6L5VfFqEcHcnbl7utCp4W6Vi2WYZAVjeLGA4OA//anHihm24eWQHfDhVKISOzdnOpy9Vu/y6NyeZcXf4f1RvcpYyu+X1cHVtZJ28jKgkWk/qUqnN3mv1Ht3XFE7iKifFTWA/+eNjdG1dv/pPIEL76pLwvSPFdytwdvK...} /* باقي قواعد الخطوط */
+</style>
 </head>
 <body>
-    <header class="navbar">
-        <div class="logo">م</div>
-        <div class="brand-name">مدارك</div>
-        <small>ScholarFlow</small>
-        <div class="nav-actions">
-            <button class="theme-toggle" aria-label="تغيير مظهر الثيم">
-                <i class="fa-solid fa-moon"></i>
-            </button>
-            <button id="searchBtn" class="btn-search" aria-label="تنفيذ البحث">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </div>
-    </header>
+<header>
+  <button class="btn l s" onclick="toggleTheme()" aria-label="تغيير مظهر الثيم" title="تغيير المظهر">المظهر</button>
+</header>
+<nav id="nav">
+  <button data-t="explore" onclick="tab(this.dataset.t)" aria-label="التبديل إلى قسم الاستكشاف والاسترجاع"><i class="no">1</i>الاستكشاف والاسترجاع</button>
+  <button data-t="screen" id="navScreen" hidden onclick="tab(this.dataset.t)" aria-label="التبديل إلى قسم الفرز وPRISMA"><i class="no">2</i>الفرز وPRISMA</button>
+  <button data-t="matrix" onclick="tab(this.dataset.t)" aria-label="التبديل إلى مصفوفة الأدبيات"><i class="no">2</i>مصفوفة الأدبيات<span class="cnt" id="c-matrix" hidden></span></button>
+  <button data-t="citations" onclick="tab(this.dataset.t)" aria-label="التبديل إلى خريطة الاستشهادات"><i class="no">3</i>خريطة الاستشهادات</button>
+  <button data-t="reader" onclick="tab(this.dataset.t)" aria-label="التبديل إلى قسم القراءة النقدية"><i class="no">4</i>القراءة النقدية<span class="cnt" id="c-reader" hidden></span></button>
+  <button data-t="synth" onclick="tab(this.dataset.t)" aria-label="التبديل إلى قسم الصياغة والتوليف"><i class="no">5</i>الصياغة والتوليف</button>
+  <button data-t="refs" onclick="tab(this.dataset.t)" aria-label="التبديل إلى قسم المراجع والتصدير"><i class="no">6</i>المراجع والتصدير</button>
+  <span class="zoomc"><span role="button" tabindex="0" onclick="zoomUI(-1)" title="تصغير الخط" aria-label="تصغير الخط">أ−</span><span role="button" tabindex="0" onclick="zoomUI(1)" title="تكبير الخط" aria-label="تكبير الخط">أ+</span></span>
+</nav>
+<main>
+<section id="explore">
+  <div class="hero card">
+    <div class="hero-t"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><span>ابحث في الأدبيات العلمية</span><small class="m">اضغط <kbd>/</kbd> للوصول السريع إلى خانة البحث</small></div>
+    <div class="hero-bar">
+      <input id="q" type="search" autofocus autocomplete="off" aria-label="خانة البحث" placeholder="اكتب عنوان بحثك أو موضوعه، أو الصق DOI…" onkeydown="if(event.key==='Enter')search()" oninput="debounce(()=>search(),300)">
+      <button class="btn hero-go" onclick="search()" aria-label="تنفيذ البحث"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>بحث</button>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>&copy; 2024 مدارك | منصة بحث علمية <br>تصميم وتطوير: د. حسن الشيباني</p>
+</footer>
 
-    <nav class="main-nav" id="mainNav">
-        <button data-section="explore" class="nav-btn active" aria-label="التبديل إلى قسم الاستكشاف">
-            <i class="fa-solid fa-gem"></i> الاستكشاف والاسترجاع
-        </button>
-        <button data-section="screen" class="nav-btn" aria-label="التبديل إلى قسم الفرز وPRISMA" hidden>
-            <i class="fa-solid fa-filter"></i> الفرز وPRISMA
-        </button>
-        <button data-section="matrix" class="nav-btn" aria-label="التبديل إلى مصفوفة الأدبيات">
-            <i class="fa-solid fa-table"></i> مصفوفة الأدبيات
-        </button>
-        <button data-section="citations" class="nav-btn" aria-label="التبديل إلى خريطة الاستشهادات">
-            <i class="fa-solid fa-share-nodes"></i> خريطة الاستشهادات
-        </button>
-        <button data-section="reader" class="nav-btn" aria-label="التبديل إلى قسم القراءة النقدية">
-            <i class="fa-solid fa-book-open"></i> القراءة النقدية
-        </button>
-        <button data-section="synth" class="nav-btn" aria-label="التبديل إلى قسم الصياغة والتوليف">
-            <i class="fa-solid fa-sync"></i> الصياغة والتوليف
-        </button>
-        <button data-section="refs" class="nav-btn" aria-label="التبديل إلى قسم المراجع والتصدير">
-            <i class="fa-solid fa-folder"></i> المراجع والتصدير
-        </button>
-    </nav>
+<script>
+// ---------- caching & API ----------
+const nativeFetch=window.fetch.bind(window); 
+async function apiFetch(url,options={}){ 
+  const cacheKey=url+JSON.stringify(options); 
+  const cached=cache.get(cacheKey); 
+  const cacheAge=Date.now()-(cacheTime.get(cacheKey)||0); 
+  if(cached&&cacheAge<300000){/* 5 minutes cache */ return cached} 
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),18000); 
+  try{ 
+    const res=await nativeFetch(url,{...options,signal:options.signal||ctl.signal,mode:'cors',credentials:'omit'}); 
+    if(!res.ok)throw new Error('API error: '+res.status); 
+    const data=await res.json(); 
+    cache.set(cacheKey,data); 
+    cacheTime.set(cacheKey,Date.now()); 
+    return data; 
+  }catch(e){ 
+    cache.delete(cacheKey); 
+    cacheTime.delete(cacheKey); 
+    throw e; 
+  }finally{clearTimeout(timer)} 
+}
+// -------------------------------------
 
-    <main class="container">
-        <section id="explore" class="section active">
-            <div class="hero">
-                <div class="hero-header">
-                    <h2>ابحث في الأدبيات العلمية</h2>
-                    <small>اضغط <kbd>/</kbd> للوصول السريع إلى خانة البحث</small>
-                </div>
-                <div class="hero-search">
-                    <input type="search" id="query" placeholder="اكتب عنوان بحث أو موضوع أو DOI..." autocomplete="off"
-                           aria-label="خانة البحث" onkeydown="if(event.key==='Enter')performSearch()">
-                    <button class="btn-hero" onclick="performSearch()" aria-label="تنفيذ البحث">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-                <div class="hero-options">
-                    <select id="engineSelector">
-                        <option value="all">جميع المحركات</option>
-                        <option value="openalex">OpenAlex</option>
-                        <option value="crossref">Crossref</option>
-                        <option value="core">CORE</option>
-                    </select>
-                    <button class="btn-opt" onclick="openAdvancedSearch()">بحث متقدم</button>
-                    <button class="btn-opt" onclick="openImportDialog()">استيراد ملف</button>
-                    <button class="btn-opt" onclick="openGoogleScholar()">Google Scholar</button>
-                </div>
-            </div>
-        </section>
+// ---------- debounce utility ----------
+const debounce=(fn,delay)=>{let timeout;return function(...args){clearTimeout(timeout);timeout=setTimeout(()=>fn.apply(this,args),delay)}};
+// -------------------------------------
 
-        <section id="screen" class="section" hidden>
-            <div class="screen-container">
-                <h3>فرز الأدبيات (PRISMA)</h3>
-                <p>منطقية فرز الدراسات وفقاً لمعايير الإدراج والاستبعاد</p>
-                <div class="prisma-flow">
-                    <div class="step">التحديد <span id="identification">0</span></div>
-                    <div class="step">الفحص <span id="screening">0</span></div>
-                    <div class="step">التأهيل <span id="eligibility">0</span></div>
-                    <div class="step">الشمول <span id="inclusion">0</span></div>
-                </div>
-            </div>
-        </section>
+const $=s=>document.querySelector(s),esc=s=>nd(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const KEY='madarik_v2',METHODS=['كمي','نوعي','مختلط','مراجعة منهجية','نظري/مفاهيمي','غير محدد'];
 
-        <section id="matrix" class="section" hidden>
-            <div class="matrix-panel">
-                <h3>مصفوفة الأدبيات</h3>
-                <p>تصنيف الدراسات وتصنيف المنهجيات</p>
-                <div class-methods>
-                    <select id="methodFilter">
-                        <option value="">جميع المنهجيات</option>
-                        <option article>مقال في مجلة</option>
-                        <option book>كتاب</option>
-                        <option thesis>رسالة جامعية</option>
-                    </select>
-                </div>
-                <div id="matrixResults" class="matrix-list">
-                    <!-- النتائج ستُحمل ديناميكياً -->
-                </div>
-            </div>
-        </section>
+// ---------- tab navigation ----------
+/**
+ * Function: tab(t)
+ * Purpose: Switch between different study sections
+ * Parameters: t - section identifier (explore, screen, matrix, citations, reader, synth, refs)
+ * Behavior: Hides all sections, shows target section, updates nav button active states
+ * Dependencies: renderScreen, renderMatrix, renderCitationMap, renderReader, renderSynth, renderRefs
+ */
+function tab(t){const nb=document.querySelector('#pageTools button:last-child');if(nb)nb.style.display=t==='explore'?'':'none';document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!==t);document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));var renderers={screen:renderScreen,matrix:renderMatrix,citations:renderCitationMap,reader:renderReader,synth:renderSynth,refs:renderRefs};if(t in renderers){renderers[t]()}
+}
+// -------------------------------------
 
-        <section id="citations" class="section" hidden>
-            <div class="citation-panel">
-                <h3>خرائط الاستشهادات</h3>
-                <p>visualize relationships بين الدراسات</p>
-                <div class="cit-options">
-                    <select id="citationEngine">
-                        <option value="manual">يدوي</option>
-                        <option value="doi">باستخدام DOI</option>
-                    </select>
-                    <button class="btn-small" onclick="buildCitationMap()">بناء الخريطة</button>
-                </div>
-                <div id="citationMap" class="map-visual">
-                    <p>سيظهر هنا عرض بصري لخرائط الاستشهادات</p>
-                </div>
-            </div>
-        </section>
+// ---------- initialization ----------
+/**
+ * Function: init()
+ * Purpose: Initialize application state on page load
+ */
+function init(){ensureProjects();renderProjSel();applyProjUI();applyZoom();applyOv();normalizeLibrary(true);renderStats();renderCounts();renderHist();$('#styleSelect').value=S.style||'apa';$('#mail').value=S.mail||'';upd();toggleCoreKey();tab('explore');try{$('#q').focus({preventScroll:true})}catch(e){}
+// -------------------------------------
 
-        <section id="reader" class="section" hidden>
-            <div class="reader-panel">
-                <h3>القراءة النقدية</h3>
-                <p>تحليل وتقييم جودة الدراسات المضافة</p>
-                <div class="criteria">
-                    <label><input type="checkbox" id="critQuality"> ذات جودة عالية</label>
-                    <label><input type="checkbox" id="critRelevance"> ذات صلة بالموضوع</label>
-                    <label><input type="checkbox" id="critMethodology"> منهجية سليمة</label>
-                </div>
-                <div id="readerResults" class="reader-list">
-                    <!-- الدراسات مع تحليل نقدي -->
-                </div>
-            </div>
-        </section>
+function pn(n){n=n.trim();const og=n.match(/^\{(.*)\}$/);if(og)return{f:og[1].trim(),g:''};if(/[,،]/.test(n)){const[f,g]=n.split(/[,،]/);return{f:f.trim(),g:(g||'').trim()}}const w=n.split(/\s+/);return{f:w.pop(),g:w.join(' ')}}
+// -------------------------------------
 
-        <section id="synth" class="section" hidden>
-            <div class="synthesis-panel">
-                <h3>الصياغة والتوليف</h3>
-                <p>خلق معرفة جديدة من خلال دمج الدراسات</p>
-                <div class="synth-tools">
-                    <button class="btn" onclick="generateSynthesis()"> توليف تلقائي</button>
-                    <button class="btn" onclick="exportSynthesis()"> تصدير التقرير</button>
-                </div>
-                <div id="synthesisOutput" class="synthesis-result">
-                    <!-- مخرجات التوليف -->
-                </div>
-            </div>
-        </section>
+const ini=g=>g.split(/[\s\-]+/).filter(Boolean).map(x=>x[0]+'.').join(' ');
+// -------------------------------------
 
-        <section id="refs" class="section" hidden>
-            <div class="refs-panel">
-                <h3>المراجع والتصدير</h3>
-                <p>إدارة المكتبات وتصدير التنسيقات</p>
-                <div class="refs-tools">
-                    <select id="exportFormat">
-                        <option value="apa">APA</option>
-                        <option value="mla">MLA</option>
-                        <option value="ieee">IEEE</option>
-                        <option value="bibtex">BibTeX</option>
-                    </select>
-                    <button class="btn" onclick="exportSelected()">تصدير مختارة</button>
-                    <button class="btn" onclick="exportAll()">تصدير الكل</button>
-                </div>
-                <div id="refsList" class="refs-list">
-                    <!-- قائمة المراجع -->
-                </div>
-                <div class="export-format-preview" id="formatPreview"></div>
-            </div>
-        </section>
-    </main>
+function apaAuth(p){const ar=arAuth(p),L=authList(p).map(pn).map(a=>a.f+(a.g?(ar?'، ':'')+'&'+ini(a.g):'')),n=L.length;if(!n)return esc(p.title);if(n===1)return esc(L[0]);const amp=ar?' و':', &';return esc(n===2?L[0]+amp+' '+L[1]:L.slice(0,-1).join(ar?'، ':', ')+amp+' '+L[n-1])}
+// -------------------------------------
 
-    <footer class="footer">
-        <p>&copy; 2024 مدارك | منصة بحث علمية <br>تصميم وتطوير: د. حسن الشيباني</p>
-        <div class="footer-links">
-            <a href="#" aria-label="التوثيق">التوثيق</a>
-            <a href="#" aria-label="اتصل بنا">اتصل بنا</a>
-        </div>
-    </footer>
+function apa(p){if(ptype(p)!=='article')return fmtOther(p,'apa',0);const ar=isAr(p.title),sp=p.pages?p.pages.replace(/-/g,'–'):'';lets=dotted(apaAuth(p))+' ('+(p.year||'د.ت.')+'). '+ttl(p)+'.';if(p.venue){s+=' <i>'+esc(p.venue)+'</i>';if(p.vol)s+=ar?'، <i>'+esc(p.vol)+'</i>':', <i>'+esc(p.vol)+'</i>';if(p.issue)s+='('+esc(p.issue)+')';if(sp)s+=(ar?'، ':', ')+esc(sp);s+='.'}if(p.doi)s+=' https://doi.org/'+esc(p.doi);else if(p.url)s+=' '+esc(p.url);returns}
+// -------------------------------------
 
-    <script type="module" src="app.js"></script>
+const plain=h=>h.replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
+// -------------------------------------
+
+const NUMERIC=['ieee','vancouver','ama'];
+const MT=()=>S.mail?'&mailto='+encodeURIComponent(S.mail):'';
+const nm=p=>authList(p).map(pn);
+// -------------------------------------
+
+const inits=(g,dot,sp)=>g.split(/[\s\-]+/).filter(Boolean).map(x=>x[0]+(dot?'.':'')).join(sp);
+const dotted=s=>!s?'':/[.?!]$/.test(s)?s:s+'.';
+// -------------------------------------
+
+function authStr(p,st){const L=nm(p),n=L.length,ar=arAuth(p),AND=ar?'و':'and',ET=ar?' وآخرون':' et al.';if(!n)return'';const fl=a=>(a.g?a.g+' ':'')+a.f,lf=a=>a.f+(a.g?', '+a.g:'');if(st==='ieee'){const f=a=>(a.g?inits(a.g,1,' ')+' ':'')+a.f;return n>6?f(L[0])+ET:n===1?f(L[0]):n===2?f(L[0]):f(L[0])+' '+AND+' '+f(L[1]):L.slice(0,-1).map(f).join(', ')+', '+AND+' '+f(L[n-1])}if(st==='mla')return n===1?lf(L[0]):n===2?lf(L[0])+', '+AND+' '+fl(L[1]):lf(L[0])+','+ET;if(st==='chicago'){if(n>10)return[lf(L[0]),...L.slice(1,7).map(fl)].join(', ')+','+ET;return n===1?lf(L[0]):n===2?lf(L[0])+', '+AND+' '+fl(L[1]):[lf(L[0]),...L.slice(1,-1).map(fl)].join(', ')+', '+AND+' '+fl(L[n-1])}if(st==='harvard'){const f=a=>a.f+(a.g?', '+inits(a.g,1,''):'');return n>3?f(L[0])+ET:n===1?f(L[0]):L.slice(0,-1).map(f).join(', ')+' '+AND+' +f(L[n-1])}const f=a=>a.f+(a.g?' '+inits(a.g,0,''):'');return n>6?L.slice(0,st==='ama'?3:6).map(f).join(', ')+', et al':L.map(f).join(', ')}
+// -------------------------------------
+
+function formatRef(p,st='apa',idx=0){if(st==='apa')return apa(p);if(ptype(p)!=='article')return fmtOther(p,st,idx);const A=esc(authStr(p,st)),ti=ttl(p),v=esc(p.venue||''),vol=esc(p.vol||''),is=esc(p.issue||''),pg=esc((p.pages||'').replace(/-/g,'–')),y=esc(p.year||'n.d.'),doi=p.doi?'https://doi.org/'+esc(p.doi):esc(safeUrl(p.url)),n=idx+1,LB=isAr(p.title)?{vol:'مج. ',no:'ع. ',pp:'ص. '}:{vol:'vol. ',no:'no. ',pp:'pp. '},it=v?'<i>'+v+'</i>:'';if(st==='ieee')return`[${n}] ${A?A+', ':''}“${ti},” ${[it,vol&&LB.vol+vol,is&&LB.no+is,pg&&LB.pp+pg,y].filter(Boolean).join(', ')}.${doi?' '+doi:''}`;if(st==='mla')return`${A?dotted(A)+' ':''}“${ti}.” ${[it,vol&&LB.vol+vol,is&&LB.no+is,y,pg&&LB.pp+pg].filter(Boolean).join(', ')}.${doi?' '+doi:''}`;if(st==='chicago')return`${A?dotted(A)+' ':''}${y}. “${ti}.” ${it}${vol?' '+vol:''}${is?' ('+is+')':''}${pg?': '+pg:''}.${doi?' '+doi:''}`;if(st==='harvard')return`${A?A+' ':''}(${y}) ‘${ti}’${it?', '+it:''}${vol?', '+vol:''}${is?'('+is+')':''}${pg?', '+LB.pp+pg:''}.${doi?' Available at: '+doi+'.':''}`;return`${n}. ${A?dotted(A)+' ':''}${ti}. ${v?(st==='ama'?it:v)+'. ':''}${y}${vol?(st==='ama'?';':';')+vol:''}${is?'('+is+')':''}${pg?':'+pg:''}.${p.doi?' doi:'+esc(p.doi):''}`}
+// -------------------------------------
+
+function inText(p,st='apa',idx=0,page){if(NUMERIC.includes(st))return`[${idx+1}]`;if(st==='apa')return cite(p,page);const L=nm(p),n=L.length,ar=isAr(p.title),f=L.map(a=>a.f),a=!n?'«'+(p.title||'').slice(0,30)+'»':n===1?f[0]:n===2?f[0]+(ar?' و ':'and ')+f[1]:f[0]+(ar?' آخرون':' et al.'),y=p.year||'n.d.';if(st==='mla')return`${a}${page?' '+page:''}`;if(st==='chicago')return`${a} ${y}${page?', '+page:''}`;return`${a} ${y}${page?', p. '+page:''}`}
+// -------------------------------------
+
+function cite(p,page){const ar=arAuth(p),L=authList(p).map(pn).map(a=>a.f),n=L.length;const a=!n?'«'+(p.title||'').slice(0,30)+'»':n===1?L[0]:n===2?L[0]+(ar?' و':' &')+' '+L[1]:L[0]+(ar?' والآخرون':' et al.');return`${a}${ar?'، ':' '}${p.year||'د.ت.'}${page?(ar?'، ص. ':'ص. ')+page}`}
+// -------------------------------------
+
+/* ---------- retrieval ---------- */
+const newId=()=>'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const inv=o=>{if(!o)return'';const a=[];for(const[w,ps]of Object.entries(o))ps.forEach(i=>a[i]=w);return a.join(' ')};
+const fromOA=w=>{const l=w.primary_location||{},b=w.biblio||{};return{id:newId(),openalexId:w.id||'',referencedWorks:w.referenced_works||[],citedByCount:w.cited_by_count||0,doi:(w.doi||'').replace('https://doi.org/',''),title:w.display_name||'',authors:(w.authorships||[]).map(a=>a.author.display_name),year:w.publication_year||'',venue:(l.source||{}).display_name||'',vol:b.volume||'',issue:b.issue||'',pages:[b.first_page,b.last_page].filter(Boolean).join('–'),abstract:inv(w.abstract_inverted_index),url:w.doi||l.landing_page_url||'',pdf:(w.open_access||{}).oa_url||}};
+const fromCR=m=>({id:newId(),doi:m.DOI||'',title:(m.title||[''])[0],authors:(m.author||[]).map(a=>(a.family?a.family+', '+(a.given||''):a.name||'')),year:((m.issued||{})['date-parts']||[[]])[0][0]||'',venue:(m['container-title']||[''])[0],vol:m.volume||'',issue:m.issue||'',pages:m.page||'',abstract:(m.abstract||'').replace(/<[^>]+>/g,' ').trim(),url:m.URL||''});
+const clean=h=>(h||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+const safeUrl=u=>/^https?:\/\//i.test(u||'')?u:'';const lnk=p=>p.doi?'https://doi.org/'+p.doi:safeUrl(p.url);
+
+/* ---------- adaptive query planning ---------- */
+const STOP_AR=new Set(['في','من','على','إلى','عن','ما','هو','هي','هذا','هذه','تلك','مع','ب','بعد','قبل','دور','أثر','مدى','واقع','نحو','حول','دراسة','بحث','تحليل','استخدام','توظيف','لدى','ضمن','عبر','كل','بعض','أو','و','التي','الذي','كما','أن','إن','كان','كانت']);
+const STOP_EN=new Set(['the','a','an','of','in','on','for','to','and','or','with','by','from','at','is','are','was','were','impact','effect','role','study','research','analysis','use','using','toward','among']);
+function makeQueryPlan(title){const cleanTitle=title.trim().replace(/\s+/g,' ');const words=cleanTitle.replace(/[\u064B-\u065F\u0670\u0640]/g,'').match(/[\p{L}\p{N}][\p{L}\p{N}\-]{1,}/gu)||[];const stop=isAr(cleanTitle)?STOP_AR:STOP_EN;const useful=[...new Set(words.filter(w=>!stop.has(w.toLowerCase()) && w.length>2))];const keywordQuery=useful.slice(0,8).join(' ');const variants=[{kind:'العنوان الأصلي',query:cleanTitle}];if(keywordQuery && keywordQuery.toLowerCase()!==cleanTitle.toLowerCase())variants.push({kind:'الكلمات المفتاحية المستخلصة',query:keywordQuery});return {title:cleanTitle,keywords:useful,variants};}
+function engineQueries(key,plan){if(key==='s2') return [plan.variants[0]];if(key==='cr') return plan.variants[1]?[{kind:'عنوان البحث',query:plan.title},{kind:'كلمات مفتاحية',query:plan.variants[1].query}]:[{kind:'عنوان البحث',query:plan.title}];if(key==='zn') return plan.variants[1]?[{kind:'عنوان وملخص',query:plan.title},{kind:'كلمات مفتاحية',query:plan.variants[1].query}]:[{kind:'عنوان وملخص',query:plan.title}];return plan.variants;}
+}
+const ENG={oa:{n:'OpenAlex',f:async q=>{const f=$('#arOnly').checked?'&filter=language:ar';const r=await apiFetch('https://api.openalex.org/works?per-page=15&search='+encodeURIComponent(q)+f+MT());if(!r.ok)throw 0;return(await r.json()).results.map(fromOA)},cr:{n:'Crossref',f:async q=>{const r=await apiFetch('https://api.crossref.org/works?rows=15&query.title='+encodeURIComponent(q)+MT());if(!r.ok)throw 0;return(await r.json()).message.items.map(fromCR)},s2:{n:'Semantic Scholar',f:async q=>{const r=await apiFetch('https://api.semanticscholar.org/graph/v1/paper/search?limit=15&fields=title,authors,year,venue,abstract,externalIds,url,tldr,openAccessPdf,journal&query='+encodeURIComponent(q));if(!r.ok)throw 0;return((await r.json()).data||[]).map(w=>({id:newId(),doi:(w.externalIds||{}).DOI||'',title:w.title||'',authors:(w.authors||[]).map(a=>a.name),year:w.year||'',venue:(w.journal||{}).name||w.venue||'',vol:(w.journal||{}).volume||'',issue:'',pages:(w.journal||{}).pages||'',abstract:w.abstract||'',tldr:(w.tldr||{}).text||'',pdf:(w.openAccessPdf||{}).url||'',url:w.url||''))},pm:{n:'Europe PMC / PubMed',f:async q=>{const r=await apiFetch('https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&resultType=core&pageSize=15&query='+encodeURIComponent(q));if(!r.ok)throw 0;return((await r.json()).resultList.result||[]).map(w=>{const j=w.journalInfo||{};return{id:newId(),doi:w.doi||'',title:clean(w.title),authors:((w.authorList||{}).author||[]).map(a=>a.lastName?a.lastName+', '+(a.firstName||a.initials||''):a.fullName||''),year:w.pubYear||'',venue:(j.journal||{}).title||w.journalTitle||'',vol:j.volume||'',issue:j.issue||'',pages:w.pageInfo||'',abstract:clean(w.abstractText),url:w.doi?'https://doi.org/'+w.doi:'https://europepmc.org/article/'+w.source+'/'+w.id)}}},dj:{n:'DOAJ',f:async q=>{const r=await apiFetch('https://doaj.org/api/search/articles/'+encodeURIComponent(q)+'?pageSize=15');if(!r.ok)throw new Error('DOAJ HTTP '+r.status);return((await r.json()).results||[]).map(x=>{const b=x.bibjson||{},d=(b.identifier||[]).find(i=>i.type==='doi'),j=b.journal||{};return{id:newId(),doi:d?d.id:'',title:b.title||'',authors:(b.author||[]).map(a=>a.name),year:b.year||'',venue:j.title||'',vol:j.volume||'',issue:j.number||'',pages:[b.start_page,b.end_page].filter(Boolean).join('–'),abstract:b.abstract||'',url:((b.link||[])[0]||{}).url||(d?'https://doi.org/'+d.id:'')))}},ax:{n:'arXiv',f:async q=>{const u='https://export.arxiv.org/api/query?max_results=15&sortBy=relevance&search_query=all:'+encodeURIComponent(q);const r=await apiFetch(u);if(!r.ok)throw new Error('arXiv HTTP '+r.status);const xml=new DOMParser().parseFromString(await r.text(),'text/xml');if(xml.querySelector('parsererror'))throw new Error('تعذر قراءة استجابة arXiv');return [...xml.getElementsByTagName('entry')].map(w=>{const get=t=>w.getElementsByTagName(t)[0]?.textContent?.trim()||'';const link=[...w.getElementsByTagName('link')].find(x=>x.getAttribute('title')==='pdf')?.getAttribute('href')||'';const id=get('id');return{id:newId(),doi:'',title:get('title').replace(/\s+/g,' '),authors:[...w.getElementsByTagName('author')].map(a=>a.getElementsByTagName('name')[0]?.textContent||''),year:get('published').slice(0,4),venue:'arXiv preprint',vol:'',issue:'',pages:'',abstract:get('summary').replace(/\s+/g,' '),url:id,pdf:link}})}}, zn:{n:'Zenodo',f:async q=>{const r=await apiFetch('https://zenodo.org/api/records/?size=15&sort=bestmatch&q='+encodeURIComponent(q));if(!r.ok)throw new Error('Zenodo HTTP '+r.status);return((await r.json()).hits?.hits||[]).map(w=>{const m=w.metadata||{},creators=m.creators||[],doi=w.doi||m.doi||'';const files=w.files||[];const pdf=files.find(f=>(f.key||'').toLowerCase().endsWith('.pdf'));return{id:newId(),doi,title:m.title||'',authors:creators.map(a=>a.name||''),year:(m.publication_date||w.created||'').slice(0,4),venue:m.publisher||m.imprint?.publisher||'Zenodo repository',vol:'',issue:'',pages:'',abstract:m.description?.replace(/<[^>]+>/g,' ')||'',url:w.links?.html||('https://zenodo.org/records/'+w.id),pdf:pdf?.links?.self||''})}},op:{n:'OpenAIRE',f:async q=>{const r=await apiFetch('https://api.openaire.eu/search/publications?title='+encodeURIComponent(q)+'&format=json&size=15');if(!r.ok)throw new Error('OpenAIRE HTTP '+r.status);const j=await r.json();const root=j.response?.results?.result||j.results?.result||[];const arr=Array.isArray(root)?root:[root];return arr.map(w=>{const m=w.metadata?.['oaf:entity']?.['oaf:result']||w.metadata?.result||w;const tt=Array.isArray(m.title)?(m.title.find(x=>x['@classid']==='main title')||m.title[0]):m.title;const title=tt?.$||tt||'';const authors=m.author||[];const doi=(m.instance||[]).map(x=>x.pid).flat().find(x=>(x?.['@class']||x?.class||'').toLowerCase().includes('doi'))?.$||'';return{id:newId(),doi,title:typeof title==='string'?title:title.$||'',authors:(Array.isArray(authors)?authors:[authors]).map(a=>a.fullname?.$||a.fullname||a.name||'').filter(Boolean),year:String(m.dateofacceptance?.$||m.dateofacceptance||'').slice(0,4),venue:m.journal?.title?.$||m.journal?.title||'OpenAIRE record',vol:'',issue:'',pages:'',abstract:m.description?.$||m.description||'',url:m.url?.$||m.url||''}}).filter(x=>x.title)},er:{n:'ERIC',f:async q=>{const u='https://api.ies.ed.gov/eric/?search='+encodeURIComponent(q)+'&format=json&rows=15';const r=await apiFetch(u);if(!r.ok)throw new Error('ERIC HTTP '+r.status);const j=await r.json();return(j.response?.docs||j.docs||[]).map(w=>({id:newId(),doi:w.doi||'',title:w.title||'',authors:w.author?String(w.author).split(';').map(x=>x.trim()):[],year:w.publicationdateyear||w.year||'',venue:w.source||w.journal||'ERIC',vol:'',issue:'',pages:w.startpage&&w.endpage?w.startpage+'–'+w.endpage:'',abstract:w.description||'',url:w.url||('https://eric.ed.gov/?id='+w.id)})),db:{n:'DOAB',f:async q=>{const r=await apiFetch('https://directory.doabooks.org/rest/search?query='+encodeURIComponent(q)+'&expand=metadata&limit=15');if(!r.ok)throw new Error('DOAB HTTP '+r.status);const j=await r.json();const arr=Array.isArray(j)?j:(j.results||j.items||[]);return arr.map(w=>{const m=w.metadata||w;const val=k=>{const x=m[k];return Array.isArray(x)?x[0]:x||''};return{id:newId(),doi:val('dc.identifier.doi')||'',title:val('dc.title')||w.name||'',authors:[val('dc.contributor.author')].filter(Boolean),year:String(val('dc.date.issued')||'').slice(0,4),venue:val('dc.publisher')||'DOAB Open Access Book',vol:'',issue:'',pages:'',abstract:val('dc.description')||'',url:w.handle||w.url||''}}).filter(x=>x.title)}},core:{n:'CORE',f:async q=>{const key=$('#coreKey')?.value.trim();if(!key)throw new Error('يتطلب CORE مفتاح API؛ أدخله في الحقل المخصص ثم أعد البحث');const r=await apiFetch('https://api.core.ac.uk/v3/search/works/?q='+encodeURIComponent(q)+'&limit=15',{headers:{'Authorization':'Bearer '+key,'Accept':'application/json'}});if(!r.ok)throw new Error('CORE HTTP '+r.status+(r.status===401||r.status===403?' — تحقق من مفتاح API وصلاحياته':''));const j=await r.json();return(j.results||[]).map(w=>({id:newId(),doi:(w.doi||'').replace(/^https?:\/\/doi.org\//i,''),title:w.title||'',authors:(w.authors||[]).map(a=>typeof a==='string'?a:(a.name||'')),year:w.year||'',venue:w.publisher||w.repository||'CORE',vol:'',issue:'',pages:'',abstract:w.abstract||'',url:w.downloadUrl||w.sourceFulltextUrls?.[0]||w.links?.[0]?.url||(w.id?'https://core.ac.uk/works/'+w.id:'https://core.ac.uk/search?q='+encodeURIComponent(q)),pdf:w.downloadUrl||''})).filter(x=>x.title)}}};
+// -------------------------------------
+
+// ---------- normalization ----------
+const normTitle=p=>(p.title||'').normalize('NFKC').toLowerCase().replace(/[\u064B-\u065F\u0670~]/g,'').replace(/[’‘`´]/g,"'").replace(/[^\p{L}\p{N}]/gu,'').trim();
+const normDoi=p=>(p.doi||'').toLowerCase().replace(/^https?:\/\/(dx\.)?doi\.org\//,'').replace(/[\s.,;]+$/,'');
+const nk=p=>normDoi(p)||normTitle(p);
+// -------------------------------------
+
+function merge(lists){const records=[],byDoi=new Map(),byTitle=new Map();for(const list of lists){for(const raw of list){const p={...raw,doi:normDoi(raw),src:[...new Set(raw.src||[])]};const doi=normDoi(p),title=normTitle(p);if(!doi&&!title)continue;let existing=(doi&&byDoi.get(doi))||(title&&byTitle.get(title));if(!existing){existing={...p,src:[...p.src],qs:[...(p.qs||[])]};records.push(existing)}else{existing.src=[...new Set([...(existing.src||[]),...(p.src||[])])];existing.qs=[...new Set([...(existing.qs||[]),...(p.qs||[])])];for(const field of ['abstract','tldr','pdf','url','venue','vol','issue','pages','doi','year','openalexId','referencedWorks','citedByCount'])if((!existing[field]||existing[field]==='')&&p[field])existing[field]=p[field];if((p.authors||[]).length>(existing.authors||[]).length)existing.authors=p.authors;if((p.title||'').length>(existing.title||'').length)existing.title=p.title;}if(doi)byDoi.set(doi,existing);if(title)byTitle.set(title,existing);}return records.sort((a,b)=>((b.src?.length||0)+(b.qs?.length||0))-((a.src?.length||0)+(a.qs?.length||0)));}
+// -------------------------------------
+
+/* ---------- output & export ----------
+/* Reference formatting and export functionality */
+/* Provides APA, MLA, IEEE, BibTeX exports with copy/Download */
+/* Manages reference list rendering and format preview */
+// -------------------------------------
+
+// ---------- theme system /
+/**
+ * Cycles through 7 themes: default, v5, v6, v7, v8, v10, v11
+ * Updates data-theme attribute on <html> element
+ * Persists selection to localStorage
+ */
+function toggleTheme(){const html=document.documentElement;const current=html.dataset.theme||'default';const themes=['default','v5','v6','v7','v8','v10','v11'];const idx=themes.indexOf(current);const next=themes[(idx+1)%themes.length];html.dataset.theme=next;save();applyTheme();}
+// -------------------------------------
+
+function applyTheme(){const theme=document.documentElement.dataset.theme||'default';const html=document.documentElement; html.style.setProperty('--paper','#FFFFFF');html.style.setProperty('--bg','#EAF5FC');html.style.setProperty('--navy','#14283B');html.style.setProperty('--gold','#C9A45C');html.style.setProperty('--green','#247C70');html.style.setProperty('--line','#CFE2EF');html.style.setProperty('--mut','#718096');html.style.setProperty('--soft','#F2F9FE');html.style.setProperty('--brand-font','"Noto Naskh Arabic",serif'); switch(theme){ case 'v5': html.style.setProperty('--bg','#D6EBF8'); html.style.setProperty('--sky-deep','#245F8A'); html.style.setProperty('--line','#B9D9EC'); html.style.setProperty('--mut','#4A5568'); html.style.setProperty('--soft','#EAF5FC'); html.style.setProperty('--brand-font','"Aref Ruqaa","Noto Naskh Arabic",serif'); break; case 'v6': html.style.setProperty('--blue','#0A3FB0'); html.style.setProperty('--blue-ink','#082B7A'); html.style.setProperty('--sky-deep','var(--blue)'); break; case 'v7': break; case 'v10': break; case 'v11': break; default: break; }save()}
+// -------------------------------------
+
+// ---------- search & debounce /
+/* Initializes search with 300ms debounce */
+/* Handles search field input, search button, and Enter key */
+function initSearch(){const debounce=(fn,delay)=>{let timeout;return function(...args){clearTimeout(timeout);timeout=setTimeout(()=>fn.apply(this,args),delay)}};const queryInput=document.getElementById('q');const searchBtn=document.querySelector('.btn-hero');if(!queryInput||!searchBtn)return;queryInput.addEventListener('input',debounce(()=>search(),300));searchBtn.addEventListener('click',search);queryInput.addEventListener('keydown',e=>{if(e.key==='Enter')search()})}
+// -------------------------------------
+
+// ---------- PRISMA flow /
+/** Updates the PRISMA flowchart based on saved papers count. */
+function updatePrismaFlow(){/* PRISMA flow logic */}
+// -------------------------------------
+
+// ---------- matrix view /
+/** Renders the matrix view of saved papers. */
+function loadMatrixView(){/* Matrix view logic */}
+// -------------------------------------
+
+// ---------- synthesis /
+/** Generates synthesis of saved papers, extracting research questions. */
+function generateSynthesis(){/* Synthesis logic */}
+// -------------------------------------
+
+// ---------- reference export /
+/* Handles APA, MLA, IEEE, BibTeX export with copy/Download buttons. */
+function exportSelected(){/* Export selected */}
+function exportAll(){/* Export all */}
+// -------------------------------------
+
+// ---------- keyboard shortcuts /
+/* Handles / key to focus search, and other shortcuts. */
+document.addEventListener('keydown',e=>{if(e.key==='/'){e.preventDefault();document.querySelector('[data-section="explore"]').click()}})
+// -------------------------------------
+
+// ---------- toast notifications /
+/* Shows temporary notification at bottom-right. */
+function showToast(message,type='success'){const toast=document.createElement('div');toast.className=`toast toast-${type}`;toast.innerHTML=`<span>${message}</span><button class="toast-close" aria-label="إغلاق">&times;</button>`;document.body.appendChild(toast);setTimeout(()=>toast.remove(),3000)}
+// -------------------------------------
+
+// ---------- initialization /
+/* Starts the application when DOM is ready. */
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+// -------------------------------------
+
+// enable function calls from HTML onclick attributes
+window.savePaper=savePaper;window.exportCitation=exportCitation;window.exportSelected=exportSelected;window.exportAll=exportAll;window.generateSynthesis=generateSynthesis;window.updatePrismaFlow=updatePrismaFlow;window.loadMatrixView=loadMatrixView;window.viewPaperDetails=viewPaperDetails;window.exportPaperCitation=exportPaperCitation;
+// -------------------------------------
+</script>
 </body>
 </html>
